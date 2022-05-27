@@ -10,31 +10,36 @@ const usuarios = [
     id: 1,
     nome: 'Elisa',
     email: 'ea@email.com',
-    idade: 59
+    idade: 59,
+    perfil_id: 2
   },
   {
     id: 2,
     nome: 'Mariana',
     email: 'mari@email.com',
-    idade: 12
+    idade: 12,
+    perfil_id: 1
   },
   {
     id: 3,
     nome: 'Marcelo',
     email: 'ma@email.com',
-    idade: 54
+    idade: 54,
+    perfil_id: 2
   },
   {
     id: 4,
     nome: 'Fernando',
     email: 'fe@email.com',
-    idade: 12
+    idade: 12,
+    perfil_id: 1
   },
   {
     id: 5,
     nome: 'Giulia',
     email: 'giu@email.com',
-    idade: 4
+    idade: 4,
+    perfil_id: 1
   }
 ]
 
@@ -50,8 +55,8 @@ const typeDefs = gql`
   }
 
   type Perfil {
-    id: Int
-    nome: String
+    id: Int!
+    nome: String!
   }
 
   type Usuario {
@@ -61,6 +66,7 @@ const typeDefs = gql`
     idade: Int
     salario: Float
     vip: Boolean
+    perfil: Perfil
   }
 
   # Pontos de entrada da API
@@ -90,6 +96,11 @@ const resolvers = {
   Usuario: {
     salario(usuario) {
       return usuario.salario_real
+    },
+    perfil(usuario) {
+      const selecionados = perfis
+        .filter(p => p.id == usuario.perfil_id)
+      return selecionados ? selecionados[0] : null
     }
   },
   Query: {
